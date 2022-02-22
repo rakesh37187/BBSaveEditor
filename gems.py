@@ -62,12 +62,12 @@ class Gem:
             "Gem effect 2: {}\n"
             "Gem effect 3: {}"
         ).format(*(x(var_used) for x in [self._get_gem_id,
-                                                        self._get_gem_source,
-                                                        self._get_gem_quantity,
-                                                        self._get_gem_shape,
-                                                        self._get_effect_1,
-                                                        self._get_effect_2,
-                                                        self._get_effect_3]))
+                                         self._get_gem_source,
+                                         self._get_gem_quantity,
+                                         self._get_gem_shape,
+                                         self._get_effect_1,
+                                         self._get_effect_2,
+                                         self._get_effect_3]))
 
     def get_original_stats(self):
         return self._get_stats(True)

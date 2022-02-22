@@ -20,9 +20,9 @@ def extract_gems(data: bytes):
                          b"010000003f000000", b"0200000001000000", b"0200000002000000", b"0200000004000000",
                          b"0200000008000000", b"020000003f000000"]
     total_gems = 0
-    index = min([data.find(x, 0, 1000)-16 for x in gem_possibilities if data.find(x, 0, 1000)-16 > 0])
+    index = min([data.find(x, 0, 1000) - 16 for x in gem_possibilities if data.find(x, 0, 1000) - 16 > 0])
     while True:
-        gem_data = data[index: index+56]
+        gem_data = data[index: index + 56]
         if any(x in gem_data for x in gem_possibilities):
             if gem_data[17] == 49:
                 new_gem = Gem(gem_data)
@@ -40,7 +40,7 @@ def extract_user_info(data: bytes, profile_name: str):
     index = data.find(binascii.hexlify(profile_name_in_save))
     if not index > 0:
         return False
-    user_data = data[index-304: index+len(profile_name)*4]
+    user_data = data[index - 304: index + len(profile_name) * 4]
     print("User data loaded!")
     return User(user_data)
 
@@ -55,8 +55,6 @@ def main(filename: str, profile_name: str):
     user.set_echoes(4294967295)
     print(user.get_modified_stats())
     user.apply_changes(data, filename)
-
-
 
 
 if __name__ == '__main__':

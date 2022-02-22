@@ -22,7 +22,7 @@ class User:
 
     def set_echoes(self, echoes):
         echoes = binascii.hexlify(int.to_bytes(echoes, byteorder="little", length=4))
-        self._modified_user_data =  self._modified_user_data.replace(self._modified_user_data[264:272], echoes)
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[264:272], echoes)
 
     @staticmethod
     def _get_insight(data):
@@ -31,7 +31,7 @@ class User:
 
     def set_insight(self, insight):
         insight = binascii.hexlify(int.to_bytes(insight, byteorder="little", length=4))
-        self._modified_user_data =  self._modified_user_data.replace(self._modified_user_data[232:240], insight)
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[232:240], insight)
 
     @staticmethod
     def _get_health(data):
@@ -43,7 +43,8 @@ class User:
     def set_health(self, health):
         health = binascii.hexlify(int.to_bytes(health, byteorder="little", length=4))
         for i in range(1, 4):
-            self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[i*8:(i+1)*8], health)
+            self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[i * 8:(i + 1) * 8],
+                                                                        health)
 
     @staticmethod
     def _get_stamina(data):
@@ -54,7 +55,8 @@ class User:
     def set_stamina(self, stamina):
         stamina = binascii.hexlify(int.to_bytes(stamina, byteorder="little", length=4))
         for i in range(1, 4):
-            self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[56+i*8:56+(i+1)*8], stamina)
+            self._modified_user_data = self._modified_user_data.replace(
+                self._modified_user_data[56 + i * 8:56 + (i + 1) * 8], stamina)
 
     @staticmethod
     def _get_vitality(data):
@@ -128,16 +130,16 @@ class User:
             "User bloodtinge: {}\n"
             "User arcane: {}\n"
         ).format(*(x(var_used) for x in [self._get_level,
-                                                         self._get_echoes,
-                                                         self._get_insight,
-                                                         self._get_health,
-                                                         self._get_stamina,
-                                                         self._get_vitality,
-                                                         self._get_endurance,
-                                                         self._get_strength,
-                                                         self._get_skill,
-                                                         self._get_bloodtinge,
-                                                         self._get_arcane]))
+                                         self._get_echoes,
+                                         self._get_insight,
+                                         self._get_health,
+                                         self._get_stamina,
+                                         self._get_vitality,
+                                         self._get_endurance,
+                                         self._get_strength,
+                                         self._get_skill,
+                                         self._get_bloodtinge,
+                                         self._get_arcane]))
 
     def get_original_stats(self):
         return self._get_stats(True)
@@ -149,5 +151,3 @@ class User:
         data = data.replace(self._original_user_data, self._modified_user_data)
         with open(filename + "_modded", "wb") as f:
             f.write(binascii.unhexlify(data))
-
-
