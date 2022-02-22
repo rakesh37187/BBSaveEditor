@@ -1,5 +1,4 @@
 from tkinter import FLAT, messagebox, Entry, X, LEFT, SUNKEN, DISABLED, INSERT
-from tkinter import FLAT, messagebox, Entry, X, LEFT, SUNKEN, DISABLED, INSERT
 from tkinter import Tk, Frame, Button, filedialog, Label, END
 
 from process_save_file import process_file
