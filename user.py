@@ -112,7 +112,14 @@ class User:
         arcane = binascii.hexlify(int.to_bytes(arcane, byteorder="little", length=4))
         self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[176:184], arcane)
 
-    def _get_stats(self, original: bool):
+    def set_all_stats(self, values):
+        funcs = [self.set_level, self.set_echoes, self.set_insight, self.set_health, self.set_stamina,
+                 self.set_vitality, self.set_endurance, self.set_strength, self.set_skill, self.set_bloodtinge,
+                 self.set_arcane]
+        for func, value in zip(funcs, values):
+            func(int(value))
+
+    def _get_stats_as_string(self, original: bool):
         if original:
             var_used = self._original_user_data
         else:
@@ -140,6 +147,29 @@ class User:
                                          self._get_skill,
                                          self._get_bloodtinge,
                                          self._get_arcane]))
+
+    def get_original_stats_as_string(self):
+        return self._get_stats_as_string(True)
+
+    def get_modified_stats_as_string(self):
+        return self._get_stats_as_string(False)
+
+    def _get_stats(self, original: bool):
+        if original:
+            var_used = self._original_user_data
+        else:
+            var_used = self._modified_user_data
+        return (x(var_used) for x in [self._get_level,
+                                      self._get_echoes,
+                                      self._get_insight,
+                                      self._get_health,
+                                      self._get_stamina,
+                                      self._get_vitality,
+                                      self._get_endurance,
+                                      self._get_strength,
+                                      self._get_skill,
+                                      self._get_bloodtinge,
+                                      self._get_arcane])
 
     def get_original_stats(self):
         return self._get_stats(True)
