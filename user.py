@@ -6,6 +6,10 @@ class User:
         self._original_user_data = user_data
         self._modified_user_data = user_data
 
+    def get_display_name(self):
+        data_length = len(self._original_user_data)
+        return binascii.unhexlify(self._original_user_data[data_length-66:data_length]).replace(b"\x00", b"").decode("utf-8")
+
     @staticmethod
     def _get_level(data):
         level = binascii.unhexlify(data[256:258])

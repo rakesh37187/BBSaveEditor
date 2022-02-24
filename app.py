@@ -11,7 +11,6 @@ class GUI(Frame):
 
         # Storing where the save file is located and its display name
         self.file_location = None
-        self.profile_name = None
 
         # After processing the save file store the gems, the user and all the data extracted
         self.data = None
@@ -50,7 +49,7 @@ class GUI(Frame):
 
         frm_form = Frame(relief=FLAT, borderwidth=3, bg="#00A9A5")
         frm_form.pack(fill=X)
-        all_btns = [self.btn_save, self.btn_reset, self.btn_select, self.btn_process]
+
         all_entries = [self.ent_level, self.ent_echoes, self.ent_insight, self.ent_health, self.ent_stamina,
                        self.ent_vitality, self.ent_endurance, self.ent_strength, self.ent_skill,
                        self.ent_bloodtinge, self.ent_arcane]
@@ -77,7 +76,7 @@ class GUI(Frame):
         frm_form2 = Frame(relief=FLAT, bg="#00A9A5")
 
         lbl = Label(master=frm_form2, text="Display Name:", bg="#00A9A5", fg="white", font=('Helvetica', 9, 'bold'))
-        self.display_name_ent = Entry(master=frm_form2, width=65)
+        self.display_name_ent = Entry(master=frm_form2, width=65, state="disabled")
         lbl.grid(row=0, column=0, sticky="e")
         self.display_name_ent.grid(row=0, column=1)
 
@@ -129,11 +128,15 @@ class GUI(Frame):
         for stat, entry in zip(self.user.get_original_stats(), self.all_entries):
             entry.delete(0, END)
             entry.insert(0, stat)
+        self.display_name_ent.config(state="normal")
+        self.display_name_ent.delete(0, END)
+        self.display_name_ent.insert(INSERT, self.user.get_display_name())
+        self.display_name_ent.config(state="disabled")
 
     def _process_data(self):
         if self.file_location is None:
             messagebox.showwarning("User not loaded!", "No file selected")
-        self.data, self.gems, self.user = process_file(self.file_location, self.display_name_ent.get())
+        self.data, self.gems, self.user = process_file(self.file_location)
         self._set_original_stats()
 
     def _open_file_selection(self):

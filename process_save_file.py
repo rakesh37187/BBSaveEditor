@@ -1,17 +1,18 @@
 import binascii
+import re
 
 from gems import Gem
 from user import User
 
 
-def process_file(filename: str, profile_name: str):
+def process_file(filename: str):
     data = None
     with open(filename, "rb") as f:
         data = f.read()
     data = binascii.hexlify(data)
     if not data.startswith(b"41000000000000"):
         return False
-    return data, extract_gems(data), extract_user_info(data, profile_name)
+    return data, extract_gems(data), extract_user_info(data)
 
 
 def extract_gems(data: bytes):
@@ -35,20 +36,21 @@ def extract_gems(data: bytes):
     return all_gems
 
 
-def extract_user_info(data: bytes, profile_name: str):
-    profile_name_in_save = '\x00'.join([x for x in profile_name]).encode("utf-8")
-    index = data.find(binascii.hexlify(profile_name_in_save))
-    print(index)
-    print(profile_name_in_save)
+def extract_user_info(data: bytes):
+    pattern = b""
+    for i in range(25):
+        pattern += binascii.hexlify(int.to_bytes(65+i, byteorder="little", length=1))+b"(.{30})"
+    found_data = re.search(pattern, data)
+    index = found_data.start()-1272
     if not index > 0:
         return False
-    user_data = data[index - 304: index + len(profile_name) * 4]
+    user_data = data[index: index+370]
     print("User data loaded!")
     return User(user_data)
 
 
-def main(filename: str, profile_name: str):
-    data, all_gems, user = process_file(filename, profile_name)
+def main(filename: str):
+    data, all_gems, user = process_file(filename)
     if not all_gems:
         print("Failed to load gems!")
     if not user:
@@ -60,4 +62,4 @@ def main(filename: str, profile_name: str):
 
 
 if __name__ == '__main__':
-    main("userdata000x", "Profile Name of Userdata")
+    main("userdata000x")
