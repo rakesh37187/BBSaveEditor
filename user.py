@@ -37,11 +37,12 @@ class User:
     def _get_health(data):
         # Note that there are 3 health values stored at index 8:16, 16:24 and 24:32 for some reason.
         # It does not match sometimes. Not sure what is going on
-        health = binascii.unhexlify(data[16:18])
+        health = binascii.unhexlify(data[16:24])
         return int.from_bytes(health, byteorder="little")
 
     def set_health(self, health):
         health = binascii.hexlify(int.to_bytes(health, byteorder="little", length=4))
+        print(health)
         for i in range(1, 4):
             self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[i * 8:(i + 1) * 8],
                                                                         health)
@@ -64,8 +65,8 @@ class User:
         return int.from_bytes(vitality, byteorder="little")
 
     def set_vitality(self, vitality):
-        vitality = binascii.hexlify(int.to_bytes(vitality, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[96:104], vitality)
+        vitality = binascii.hexlify(int.to_bytes(vitality, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[96:98], vitality)
 
     @staticmethod
     def _get_endurance(data):
@@ -73,8 +74,8 @@ class User:
         return int.from_bytes(endurance, byteorder="little")
 
     def set_endurance(self, endurance):
-        endurance = binascii.hexlify(int.to_bytes(endurance, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[112:120], endurance)
+        endurance = binascii.hexlify(int.to_bytes(endurance, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[112:114], endurance)
 
     @staticmethod
     def _get_strength(data):
@@ -82,8 +83,8 @@ class User:
         return int.from_bytes(strength, byteorder="little")
 
     def set_strength(self, strength):
-        strength = binascii.hexlify(int.to_bytes(strength, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[144:152], strength)
+        strength = binascii.hexlify(int.to_bytes(strength, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[144:146], strength)
 
     @staticmethod
     def _get_skill(data):
@@ -91,8 +92,8 @@ class User:
         return int.from_bytes(skill, byteorder="little")
 
     def set_skill(self, skill):
-        skill = binascii.hexlify(int.to_bytes(skill, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[160:168], skill)
+        skill = binascii.hexlify(int.to_bytes(skill, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[160:162], skill)
 
     @staticmethod
     def _get_bloodtinge(data):
@@ -100,8 +101,8 @@ class User:
         return int.from_bytes(bloodtinge, byteorder="little")
 
     def set_bloodtinge(self, bloodtinge):
-        bloodtinge = binascii.hexlify(int.to_bytes(bloodtinge, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[176:184], bloodtinge)
+        bloodtinge = binascii.hexlify(int.to_bytes(bloodtinge, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[176:178], bloodtinge)
 
     @staticmethod
     def _get_arcane(data):
@@ -109,8 +110,8 @@ class User:
         return int.from_bytes(arcane, byteorder="little")
 
     def set_arcane(self, arcane):
-        arcane = binascii.hexlify(int.to_bytes(arcane, byteorder="little", length=4))
-        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[176:184], arcane)
+        arcane = binascii.hexlify(int.to_bytes(arcane, byteorder="little", length=1))
+        self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[192:194], arcane)
 
     def set_all_stats(self, values):
         funcs = [self.set_level, self.set_echoes, self.set_insight, self.set_health, self.set_stamina,
@@ -118,6 +119,11 @@ class User:
                  self.set_arcane]
         for func, value in zip(funcs, values):
             func(int(value))
+            print("-----")
+            print(self._original_user_data)
+            print(self._modified_user_data)
+            print("-----")
+        # self.set_endurance(int(values[6]))
 
     def _get_stats_as_string(self, original: bool):
         if original:

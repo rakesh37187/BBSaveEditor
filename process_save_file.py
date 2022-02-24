@@ -38,6 +38,8 @@ def extract_gems(data: bytes):
 def extract_user_info(data: bytes, profile_name: str):
     profile_name_in_save = '\x00'.join([x for x in profile_name]).encode("utf-8")
     index = data.find(binascii.hexlify(profile_name_in_save))
+    print(index)
+    print(profile_name_in_save)
     if not index > 0:
         return False
     user_data = data[index - 304: index + len(profile_name) * 4]
