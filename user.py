@@ -8,7 +8,7 @@ class User:
 
     @staticmethod
     def _get_level(data):
-        level = binascii.unhexlify(data[256:264])
+        level = binascii.unhexlify(data[256:258])
         return int.from_bytes(level, byteorder="little")
 
     def set_level(self, level):
@@ -26,7 +26,7 @@ class User:
 
     @staticmethod
     def _get_insight(data):
-        insight = binascii.unhexlify(data[232:240])
+        insight = binascii.unhexlify(data[232:234])
         return int.from_bytes(insight, byteorder="little")
 
     def set_insight(self, insight):
@@ -37,7 +37,7 @@ class User:
     def _get_health(data):
         # Note that there are 3 health values stored at index 8:16, 16:24 and 24:32 for some reason.
         # It does not match sometimes. Not sure what is going on
-        health = binascii.unhexlify(data[16:24])
+        health = binascii.unhexlify(data[16:18])
         return int.from_bytes(health, byteorder="little")
 
     def set_health(self, health):
@@ -49,7 +49,7 @@ class User:
     @staticmethod
     def _get_stamina(data):
         # Like health there are 3 stamina values stored at 64:72, 72:80, 80:88
-        stamina = binascii.unhexlify(data[64:72])
+        stamina = binascii.unhexlify(data[64:66])
         return int.from_bytes(stamina, byteorder="little")
 
     def set_stamina(self, stamina):
@@ -60,7 +60,7 @@ class User:
 
     @staticmethod
     def _get_vitality(data):
-        vitality = binascii.unhexlify(data[96:104])
+        vitality = binascii.unhexlify(data[96:98])
         return int.from_bytes(vitality, byteorder="little")
 
     def set_vitality(self, vitality):
@@ -69,7 +69,7 @@ class User:
 
     @staticmethod
     def _get_endurance(data):
-        endurance = binascii.unhexlify(data[112:120])
+        endurance = binascii.unhexlify(data[112:114])
         return int.from_bytes(endurance, byteorder="little")
 
     def set_endurance(self, endurance):
@@ -78,7 +78,7 @@ class User:
 
     @staticmethod
     def _get_strength(data):
-        strength = binascii.unhexlify(data[144:152])
+        strength = binascii.unhexlify(data[144:146])
         return int.from_bytes(strength, byteorder="little")
 
     def set_strength(self, strength):
@@ -87,7 +87,7 @@ class User:
 
     @staticmethod
     def _get_skill(data):
-        skill = binascii.unhexlify(data[160:168])
+        skill = binascii.unhexlify(data[160:162])
         return int.from_bytes(skill, byteorder="little")
 
     def set_skill(self, skill):
@@ -96,7 +96,7 @@ class User:
 
     @staticmethod
     def _get_bloodtinge(data):
-        bloodtinge = binascii.unhexlify(data[176:184])
+        bloodtinge = binascii.unhexlify(data[176:178])
         return int.from_bytes(bloodtinge, byteorder="little")
 
     def set_bloodtinge(self, bloodtinge):
@@ -105,7 +105,7 @@ class User:
 
     @staticmethod
     def _get_arcane(data):
-        arcane = binascii.unhexlify(data[192:200])
+        arcane = binascii.unhexlify(data[192:194])
         return int.from_bytes(arcane, byteorder="little")
 
     def set_arcane(self, arcane):
