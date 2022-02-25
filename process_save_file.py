@@ -5,14 +5,24 @@ from gems import Gem
 from user import User
 
 
-def process_file(filename: str):
+def process_user(filename: str):
     data = None
     with open(filename, "rb") as f:
         data = f.read()
     data = binascii.hexlify(data)
     if not data.startswith(b"41000000000000"):
         return False
-    return data, extract_gems(data), extract_user_info(data)
+    return data, extract_user_info(data)
+
+
+def process_gems(filename: str):
+    data = None
+    with open(filename, "rb") as f:
+        data = f.read()
+    data = binascii.hexlify(data)
+    if not data.startswith(b"41000000000000"):
+        return False
+    return data, extract_gems(data)
 
 
 def extract_gems(data: bytes):
@@ -39,27 +49,29 @@ def extract_gems(data: bytes):
 def extract_user_info(data: bytes):
     pattern = b""
     for i in range(25):
-        pattern += binascii.hexlify(int.to_bytes(65+i, byteorder="little", length=1))+b"(.{30})"
+        pattern += binascii.hexlify(int.to_bytes(65 + i, byteorder="little", length=1)) + b"(.{30})"
     found_data = re.search(pattern, data)
-    index = found_data.start()-1272
+    index = found_data.start() - 1272
     if not index > 0:
         return False
-    user_data = data[index: index+370]
+    user_data = data[index: index + 370]
     print("User data loaded!")
     return User(user_data)
 
 
-def main(filename: str):
-    data, all_gems, user = process_file(filename)
-    if not all_gems:
-        print("Failed to load gems!")
-    if not user:
-        print("Failed to load user!")
-    print(user.get_original_stats())
-    user.set_echoes(4294967295)
-    print(user.get_modified_stats())
-    user.apply_changes(data, filename)
-
-
-if __name__ == '__main__':
-    main("userdata000x")
+# if __name__ == '__main__':
+#     with open("./data.txt", "r") as f:
+#         lines = f.read().splitlines()
+#         print("{")
+#         for line in lines:
+#             line_list = line.split(",")
+#             for i in range(int(len(line_list)/2)):
+#                 print(
+#                     "b'"
+#                     + binascii.hexlify(int.to_bytes(int(line_list[i*2]), byteorder="little", length=4)).decode("utf-8")
+#                     + "'"
+#                     + ":\""
+#                     + line_list[(i*2)+1]
+#                     + "\","
+#                 )
+#         print("}")

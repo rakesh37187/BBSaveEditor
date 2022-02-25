@@ -8,7 +8,8 @@ class User:
 
     def get_display_name(self):
         data_length = len(self._original_user_data)
-        return binascii.unhexlify(self._original_user_data[data_length-66:data_length]).replace(b"\x00", b"").decode("utf-8")
+        return binascii.unhexlify(self._original_user_data[data_length - 66:data_length]).replace(b"\x00", b"").decode(
+            "utf-8")
 
     @staticmethod
     def _get_level(data):
@@ -46,7 +47,6 @@ class User:
 
     def set_health(self, health):
         health = binascii.hexlify(int.to_bytes(health, byteorder="little", length=4))
-        print(health)
         for i in range(1, 4):
             self._modified_user_data = self._modified_user_data.replace(self._modified_user_data[i * 8:(i + 1) * 8],
                                                                         health)
@@ -123,46 +123,6 @@ class User:
                  self.set_arcane]
         for func, value in zip(funcs, values):
             func(int(value))
-            print("-----")
-            print(self._original_user_data)
-            print(self._modified_user_data)
-            print("-----")
-        # self.set_endurance(int(values[6]))
-
-    def _get_stats_as_string(self, original: bool):
-        if original:
-            var_used = self._original_user_data
-        else:
-            var_used = self._modified_user_data
-        return "User data: {}\n".format(var_used) + (
-            "User level: {}\n"
-            "User echoes: {}\n"
-            "User insight: {}\n"
-            "User health: {}\n"
-            "User stamina: {}\n"
-            "User vitality: {}\n"
-            "User endurance: {}\n"
-            "User strength: {}\n"
-            "User skill: {}\n"
-            "User bloodtinge: {}\n"
-            "User arcane: {}\n"
-        ).format(*(x(var_used) for x in [self._get_level,
-                                         self._get_echoes,
-                                         self._get_insight,
-                                         self._get_health,
-                                         self._get_stamina,
-                                         self._get_vitality,
-                                         self._get_endurance,
-                                         self._get_strength,
-                                         self._get_skill,
-                                         self._get_bloodtinge,
-                                         self._get_arcane]))
-
-    def get_original_stats_as_string(self):
-        return self._get_stats_as_string(True)
-
-    def get_modified_stats_as_string(self):
-        return self._get_stats_as_string(False)
 
     def _get_stats(self, original: bool):
         if original:
